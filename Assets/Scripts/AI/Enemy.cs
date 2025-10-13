@@ -9,16 +9,16 @@ using UnityEngine.AI;
 public class Enemy : MonoBehaviour
 {
 
-    public GameObject TargetPlayer;
-    public int ViewDistance;
-    public float NewLocationDistance;
-    public LayerMask VisbleCheckMask;
+    [Header("Vision")]
+    [SerializeField] private GameObject TargetPlayer;
+    [SerializeField] private int ViewDistance;
+    [SerializeField] private LayerMask VisbleCheckMask;
 
-    public Transform[] WanderLocations;
+    [Header("Path Finding")]
+    [SerializeField] private float NewLocationDistance;
+    [SerializeField] private Transform[] WanderLocations;
 
     NavMeshAgent agent;
-
-    Vector3 TargetLocation;
     int priority = 0;
 
     /*priority is measured by how import the curent locaton is
@@ -44,7 +44,7 @@ public class Enemy : MonoBehaviour
         {
             if (hit.collider.gameObject.CompareTag("Player"))
             {
-                SetTarget(hit.transform.position);
+                agent.SetDestination(hit.transform.position);
                 priority = 5;
             }
             else if (priority == 5)
@@ -65,12 +65,11 @@ public class Enemy : MonoBehaviour
             SetRandomWander();
         }
 
-        agent.SetDestination(TargetLocation);
 
 
         //Debug
         Debug.DrawRay(transform.position, (difVector.normalized) * ViewDistance, Color.red);
-        Debug.DrawLine(new Vector3(TargetLocation.x, TargetLocation.y - 10, TargetLocation.z), new Vector3(TargetLocation.x, TargetLocation.y + 10, TargetLocation.z), Color.blue);
+        Debug.DrawLine(new Vector3(agent.destination.x, agent.destination.y - 10, agent.destination.z), new Vector3(agent.destination.x, agent.destination.y + 10, agent.destination.z), Color.blue);
         
     }
 
@@ -82,15 +81,16 @@ public class Enemy : MonoBehaviour
             return;
         }
         int indexlocation = UnityEngine.Random.Range(0, WanderLocations.Length);
-        SetTarget(WanderLocations[indexlocation].position);
+        agent.SetDestination(WanderLocations[indexlocation].position);
         priority = 1;
     }
 
-    void SetTarget(Vector3 TargetLocation) => agent.SetDestination(TargetLocation);
-
     public void SendSound(Vector3 postion, int priority)
     {
-        SetTarget(postion);
-        this.priority = priority;
+        if (priority > this.priority)
+        {
+           agent.SetDestination(postion);
+            this.priority = priority; 
+        }
     }
 }

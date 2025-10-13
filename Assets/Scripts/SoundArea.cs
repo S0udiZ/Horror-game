@@ -3,11 +3,12 @@ using UnityEngine;
 
 public class SoundArea : MonoBehaviour
 {
-    public Enemy enemy;
+    public int Priority;
+    public Enemy Enemy;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        if (enemy == null)
+        if (Enemy == null)
         {
             Debug.LogError("Missing enemy");
             Destroy(this);
@@ -22,7 +23,7 @@ public class SoundArea : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        enemy.SendSound(transform.position, 3);
+        Enemy.SendSound(transform.position, Priority);
         Debug.Log("Send sound");
     }
 }
