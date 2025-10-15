@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -16,6 +17,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float walkSpeed = 5f;
     [SerializeField] private float jumpHeight = 5f;
     [SerializeField] private bool canJump = true;
+    [SerializeField] private float coyoteTime = 0.2f;
+    private float baseCoyoteTime;
     [SerializeField] private bool canSprint = true;
     [SerializeField] private bool viewbob = true;
     [SerializeField] private float bobFrequency = 6f;
@@ -32,11 +35,21 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float gravityValue = -9.81f;
     private Vector3 playerVelocity;
     private bool groundedPlayer;
+    private float step = 0f;
+    [SerializeField] private float stepInterval = 3f;
+    [SerializeField] private List<AudioClip> stepSound;
+    [SerializeField] private AudioSource stepAudioSource;
+    [SerializeField] private bool enableFootsteps = true;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+    }
+
+    void Awake()
+    {
+        baseCoyoteTime = coyoteTime;
     }
 
     // Update is called once per frame
@@ -49,6 +62,12 @@ public class PlayerMovement : MonoBehaviour
         if (groundedPlayer && playerVelocity.y < 0)
         {
             playerVelocity.y = 0f;
+            coyoteTime = baseCoyoteTime; // Reset coyote time when grounded
+        }
+        else
+        {
+            coyoteTime -= Time.deltaTime;
+            if (coyoteTime < 0) coyoteTime = 0;
         }
         // Gravity
         playerVelocity.y += gravityValue * Time.deltaTime;
@@ -71,6 +90,19 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             playerCamera.transform.localPosition = new Vector3(0, 0.56f, 0); // Reset to default position
+        }
+
+        // Footstep sounds
+        if (enableFootsteps && movement.magnitude > 0 && groundedPlayer)
+        {
+            step += Time.deltaTime * (walkSpeed / stepInterval); // Adjust step speed based on walk speed
+            if (step >= 1f)
+            {
+                step = 0f;
+                AudioClip stepSoundClip = stepSound[Random.Range(0, stepSound.Count)];
+                float pitch = Random.Range(0.8f, 1.1f);
+                stepAudioSource.PlayOneShot(stepSoundClip, pitch);
+            }
         }
 
         characterController.Move(newPosition * Time.deltaTime);
@@ -108,8 +140,9 @@ public class PlayerMovement : MonoBehaviour
 
     public void Jump(InputAction.CallbackContext context)
     {
-        if (context.action.triggered && canJump && characterController.isGrounded)
+        if (context.action.triggered && canJump && (groundedPlayer || coyoteTime > 0))
         {
+            coyoteTime = 0; // Disable coyote time after jumping
             playerVelocity.y = Mathf.Sqrt(jumpHeight * -2.0f * gravityValue);
         }
     }
