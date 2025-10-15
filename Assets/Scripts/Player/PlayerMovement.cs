@@ -16,6 +16,10 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float walkSpeed = 5f;
     [SerializeField] private float jumpHeight = 5f;
     [SerializeField] private bool canJump = true;
+    [SerializeField] private bool canSprint = true;
+    [SerializeField] private bool viewbob = true;
+    [SerializeField] private float bobFrequency = 6f;
+    [SerializeField] private float bobHorizontalAmplitude = 0.05f;
 
 
     // Animation settings
@@ -38,6 +42,9 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // Preventing rotation flip on the camera ::Only happens sometimes at the start for some reason::
+        if (playerCamera.transform.localRotation.y != 0) playerCamera.transform.localRotation = Quaternion.Euler(playerCamera.transform.localRotation.x, 0, playerCamera.transform.localRotation.z);
+        // Ground check
         groundedPlayer = characterController.isGrounded;
         if (groundedPlayer && playerVelocity.y < 0)
         {
@@ -45,9 +52,26 @@ public class PlayerMovement : MonoBehaviour
         }
         // Gravity
         playerVelocity.y += gravityValue * Time.deltaTime;
+
+        // Movement
         Vector3 moveDirection = new Vector3(movement.x * walkSpeed, 0, movement.y * walkSpeed);
         Vector3 newPosition = transform.right * moveDirection.x + transform.forward * moveDirection.z;
         newPosition.y = playerVelocity.y;
+
+        // View bobbing
+        if (viewbob && movement.magnitude > 0 && groundedPlayer)
+        {
+            float _bobFrequency;
+            if (walkSpeed > 5F) _bobFrequency = bobFrequency * 1.5f; // Increase frequency when sprinting
+            else _bobFrequency = bobFrequency;
+            float bobOffsetX = Mathf.Sin(Time.time * _bobFrequency) * bobHorizontalAmplitude;
+            float bobOffsetY = Mathf.Cos(Time.time * _bobFrequency * 2) * bobHorizontalAmplitude;
+            playerCamera.transform.localPosition = new Vector3(bobOffsetX, 0.56f + bobOffsetY, 0);
+        }
+        else
+        {
+            playerCamera.transform.localPosition = new Vector3(0, 0.56f, 0); // Reset to default position
+        }
 
         characterController.Move(newPosition * Time.deltaTime);
     }
@@ -89,12 +113,12 @@ public class PlayerMovement : MonoBehaviour
 
     public void Sprinting(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (context.performed && canSprint)
         {
             walkSpeed = 8f;
             if (movement.magnitude > 0) playerAnimator.SetTrigger("Sprinting");
         }
-        else if (context.canceled)
+        else if (context.canceled && canSprint)
         {
             walkSpeed = 5f;
             if (movement.magnitude > 0) playerAnimator.SetTrigger("Running");

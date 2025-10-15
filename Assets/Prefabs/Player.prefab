@@ -211,13 +211,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
   playerCamera: {fileID: 5968797840387637099}
-  mouseSensitivity: 100
   maxLookAngle: 65
   minLookAngle: -75
   rotationSpeed: 10
   walkSpeed: 5
   jumpHeight: 0.8
   canJump: 1
+  canSprint: 1
+  viewbob: 1
+  bobFrequency: 6
+  bobHorizontalAmplitude: 0.05
   playerAnimator: {fileID: 1537546425672007444}
   characterController: {fileID: 6659592708310775819}
   gravityValue: -9.81
