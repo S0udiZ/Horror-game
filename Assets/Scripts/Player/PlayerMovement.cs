@@ -21,10 +21,10 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float bobFrequency = 6f;
     [SerializeField] private float bobHorizontalAmplitude = 0.05f;
 
-
     // Animation settings
     [Header("Animation Settings")]
     [SerializeField] private Animator playerAnimator;
+    [SerializeField] private bool useAnimations = true;
 
     // Other settings
     [Header("Other Settings")]
@@ -79,14 +79,17 @@ public class PlayerMovement : MonoBehaviour
     public void Move(InputAction.CallbackContext context)
     {
         movement = context.ReadValue<Vector2>();
-        if (movement.magnitude == 0)
+        if (useAnimations)
         {
-            playerAnimator.SetTrigger("Idle");
-        }
-        else if (movement.magnitude > 0 && playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
-        {
-            if (walkSpeed > 5f) playerAnimator.SetTrigger("Sprinting");
-            else playerAnimator.SetTrigger("Running");
+            if (movement.magnitude == 0)
+            {
+                playerAnimator.SetTrigger("Idle");
+            }
+            else if (movement.magnitude > 0 && playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
+            {
+                if (walkSpeed > 5f) playerAnimator.SetTrigger("Sprinting");
+                else playerAnimator.SetTrigger("Running");
+            }
         }
     }
 
@@ -116,12 +119,12 @@ public class PlayerMovement : MonoBehaviour
         if (context.performed && canSprint)
         {
             walkSpeed = 8f;
-            if (movement.magnitude > 0) playerAnimator.SetTrigger("Sprinting");
+            if (movement.magnitude > 0 && useAnimations) playerAnimator.SetTrigger("Sprinting");
         }
         else if (context.canceled && canSprint)
         {
             walkSpeed = 5f;
-            if (movement.magnitude > 0) playerAnimator.SetTrigger("Running");
+            if (movement.magnitude > 0 && useAnimations) playerAnimator.SetTrigger("Running");
         }
     }
 }
