@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -16,11 +17,17 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float walkSpeed = 5f;
     [SerializeField] private float jumpHeight = 5f;
     [SerializeField] private bool canJump = true;
-
+    [SerializeField] private float coyoteTime = 0.2f;
+    private float baseCoyoteTime;
+    [SerializeField] private bool canSprint = true;
+    [SerializeField] private bool viewbob = true;
+    [SerializeField] private float bobFrequency = 6f;
+    [SerializeField] private float bobHorizontalAmplitude = 0.05f;
 
     // Animation settings
     [Header("Animation Settings")]
     [SerializeField] private Animator playerAnimator;
+    [SerializeField] private bool useAnimations = true;
 
     // Other settings
     [Header("Other Settings")]
@@ -28,6 +35,12 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float gravityValue = -9.81f;
     private Vector3 playerVelocity;
     private bool groundedPlayer;
+    [Header("Sound Settings")]
+    private float step = 0f;
+    [SerializeField] private float stepInterval = 3f;
+    [SerializeField] private List<AudioClip> stepSound;
+    [SerializeField] private AudioSource stepAudioSource;
+    [SerializeField] private bool enableFootsteps = true;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -35,19 +48,63 @@ public class PlayerMovement : MonoBehaviour
         Cursor.visible = false;
     }
 
+    void Awake()
+    {
+        baseCoyoteTime = coyoteTime;
+    }
+
     // Update is called once per frame
     void Update()
     {
+        // Preventing rotation flip on the camera ::Only happens sometimes at the start for some reason::
+        if (playerCamera.transform.localRotation.y != 0) playerCamera.transform.localRotation = Quaternion.Euler(playerCamera.transform.localRotation.x, 0, playerCamera.transform.localRotation.z);
+        // Ground check
         groundedPlayer = characterController.isGrounded;
         if (groundedPlayer && playerVelocity.y < 0)
         {
             playerVelocity.y = 0f;
+            coyoteTime = baseCoyoteTime; // Reset coyote time when grounded
+        }
+        else
+        {
+            coyoteTime -= Time.deltaTime;
+            if (coyoteTime < 0) coyoteTime = 0;
         }
         // Gravity
         playerVelocity.y += gravityValue * Time.deltaTime;
+
+        // Movement
         Vector3 moveDirection = new Vector3(movement.x * walkSpeed, 0, movement.y * walkSpeed);
         Vector3 newPosition = transform.right * moveDirection.x + transform.forward * moveDirection.z;
         newPosition.y = playerVelocity.y;
+
+        // View bobbing
+        if (viewbob && movement.magnitude > 0 && groundedPlayer)
+        {
+            float _bobFrequency;
+            if (walkSpeed > 5F) _bobFrequency = bobFrequency * 1.5f; // Increase frequency when sprinting
+            else _bobFrequency = bobFrequency;
+            float bobOffsetX = Mathf.Sin(Time.time * _bobFrequency) * bobHorizontalAmplitude;
+            float bobOffsetY = Mathf.Cos(Time.time * _bobFrequency * 2) * bobHorizontalAmplitude;
+            playerCamera.transform.localPosition = new Vector3(bobOffsetX, 0.56f + bobOffsetY, 0);
+        }
+        else
+        {
+            playerCamera.transform.localPosition = new Vector3(0, 0.56f, 0); // Reset to default position
+        }
+
+        // Footstep sounds
+        if (enableFootsteps && movement.magnitude > 0 && groundedPlayer)
+        {
+            step += Time.deltaTime * (walkSpeed / stepInterval); // Adjust step speed based on walk speed
+            if (step >= 1f)
+            {
+                step = 0f;
+                AudioClip stepSoundClip = stepSound[Random.Range(0, stepSound.Count)];
+                float pitch = Random.Range(0.8f, 1.1f);
+                stepAudioSource.PlayOneShot(stepSoundClip, pitch);
+            }
+        }
 
         characterController.Move(newPosition * Time.deltaTime);
     }
@@ -55,14 +112,17 @@ public class PlayerMovement : MonoBehaviour
     public void Move(InputAction.CallbackContext context)
     {
         movement = context.ReadValue<Vector2>();
-        if (movement.magnitude == 0)
+        if (useAnimations)
         {
-            playerAnimator.SetTrigger("Idle");
-        }
-        else if (movement.magnitude > 0 && playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
-        {
-            if (walkSpeed > 5f) playerAnimator.SetTrigger("Sprinting");
-            else playerAnimator.SetTrigger("Running");
+            if (movement.magnitude == 0)
+            {
+                playerAnimator.SetTrigger("Idle");
+            }
+            else if (movement.magnitude > 0 && playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
+            {
+                if (walkSpeed > 5f) playerAnimator.SetTrigger("Sprinting");
+                else playerAnimator.SetTrigger("Running");
+            }
         }
     }
 
@@ -81,23 +141,24 @@ public class PlayerMovement : MonoBehaviour
 
     public void Jump(InputAction.CallbackContext context)
     {
-        if (context.action.triggered && canJump && characterController.isGrounded)
+        if (context.action.triggered && canJump && (groundedPlayer || coyoteTime > 0))
         {
+            coyoteTime = 0; // Disable coyote time after jumping
             playerVelocity.y = Mathf.Sqrt(jumpHeight * -2.0f * gravityValue);
         }
     }
 
     public void Sprinting(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (context.performed && canSprint)
         {
             walkSpeed = 8f;
-            if (movement.magnitude > 0) playerAnimator.SetTrigger("Sprinting");
+            if (movement.magnitude > 0 && useAnimations) playerAnimator.SetTrigger("Sprinting");
         }
-        else if (context.canceled)
+        else if (context.canceled && canSprint)
         {
             walkSpeed = 5f;
-            if (movement.magnitude > 0) playerAnimator.SetTrigger("Running");
+            if (movement.magnitude > 0 && useAnimations) playerAnimator.SetTrigger("Running");
         }
     }
 }
