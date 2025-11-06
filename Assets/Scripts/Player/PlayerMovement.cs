@@ -35,6 +35,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float gravityValue = -9.81f;
     private Vector3 playerVelocity;
     private bool groundedPlayer;
+    [Header("Sound Settings")]
     private float step = 0f;
     [SerializeField] private float stepInterval = 3f;
     [SerializeField] private List<AudioClip> stepSound;
