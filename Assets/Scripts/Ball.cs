@@ -5,7 +5,6 @@ public class Ball : MonoBehaviour
     Rigidbody rb;
     public float MaxForce;
     public bool reset = false;
-    public Transform transform;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
