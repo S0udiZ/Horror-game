@@ -5363,7 +5363,6 @@ GameObject:
   - component: {fileID: 1835609891}
   - component: {fileID: 1835609895}
   - component: {fileID: 1835609894}
-  - component: {fileID: 1835609893}
   - component: {fileID: 1835609892}
   - component: {fileID: 1835609896}
   m_Layer: 2
@@ -5400,28 +5399,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 184156f01bc48934985e6285121afbac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
---- !u!64 &1835609893
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1835609890}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 4
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!23 &1835609894
 MeshRenderer:
   m_ObjectHideFlags: 0
