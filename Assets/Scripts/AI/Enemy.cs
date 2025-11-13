@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Linq;
 using Unity.Mathematics;
 using Unity.VisualScripting;
@@ -21,7 +22,12 @@ public class Enemy : MonoBehaviour
     [Header("Extra")]
     [SerializeField] private GameObject DisplayPlane;
 
+    [Header("Chase mode")]
+    [SerializeField] private int DefaultSpeed;
+    [SerializeField] private int MaxSpeed;
+    [SerializeField] private float IntimidateTime;
 
+    bool ChaseMode;
     NavMeshAgent agent;
     int priority = 0;
     Quaternion planeDefaultRot;
@@ -42,6 +48,7 @@ public class Enemy : MonoBehaviour
     {
         agent = GetComponent<NavMeshAgent>();
         planeDefaultRot = DisplayPlane.transform.rotation;
+        agent.speed = DefaultSpeed;
     }
 
     void Update()
@@ -63,6 +70,12 @@ public class Enemy : MonoBehaviour
             {
                 agent.SetDestination(hit.transform.position);
                 priority = 5;
+                if (!ChaseMode)
+                {
+                    StartCoroutine(WaitAndChase());
+                    ChaseMode = true;
+                }
+
             }
             else if (priority == 5)
             {
@@ -79,6 +92,10 @@ public class Enemy : MonoBehaviour
 
         if (priority == 0)
         {
+            if (!ChaseMode)
+            {
+                agent.speed = DefaultSpeed;
+            }
             SetRandomWander();
         }
 
@@ -119,4 +136,10 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    IEnumerator WaitAndChase()
+    {
+        agent.speed = 0;
+        yield return new WaitForSeconds(IntimidateTime);
+        agent.speed = MaxSpeed;
+    }
 }
