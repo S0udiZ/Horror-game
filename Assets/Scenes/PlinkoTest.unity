@@ -13130,8 +13130,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 992b0e9feec310e7d9b727e849dd1a0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  MaxForce: 10
-  reset: 0
+  MaxForce: 1
+  MaxTorque: 4
+  ForceBase: {x: 1, y: 0, z: 0}
+  TorqueBase: {x: 0, y: 0, z: 1}
+  maxStall: 180
+  endY: -5.2
+  DEBUG_RESET: 0
 --- !u!1 &949455804
 GameObject:
   m_ObjectHideFlags: 0
