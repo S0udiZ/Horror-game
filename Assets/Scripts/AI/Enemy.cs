@@ -5,6 +5,7 @@ using Unity.VisualScripting;
 using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.SceneManagement;
 
 public class Enemy : MonoBehaviour
 {
@@ -109,4 +110,13 @@ public class Enemy : MonoBehaviour
             this.priority = priority;
         }
     }
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            print("Loading new scene");
+            SceneManager.LoadScene("AI Test");
+        }
+    }
+
 }
