@@ -34,7 +34,7 @@ public class Ball : MonoBehaviour
     void FixedUpdate()
     {
         if (transform.position.y <= endY) {
-			DEBUG_RESET = true; //TODO handle ball stall.
+			DEBUG_RESET = true; //TODO handle ball result.
 		} else if (transform.position.y < minY) {
             minY = transform.position.y;
             stallTime = 0;
