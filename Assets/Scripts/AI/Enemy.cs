@@ -17,9 +17,16 @@ public class Enemy : MonoBehaviour
     [Header("Path Finding")]
     [SerializeField] private float NewLocationDistance;
     [SerializeField] private Transform[] WanderLocations;
+    [Header("Extra")]
+    [SerializeField] private GameObject DisplayPlane;
+
 
     NavMeshAgent agent;
     int priority = 0;
+    Quaternion planeDefaultRot;
+
+
+
 
     /*priority is measured by how import the curent locaton is
     0 is nothing
@@ -33,6 +40,15 @@ public class Enemy : MonoBehaviour
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
+        planeDefaultRot = DisplayPlane.transform.rotation;
+    }
+
+    void Update()
+    {
+        Vector3 lookdir = (TargetPlayer.transform.position - transform.position).normalized;
+        Vector3 lookangles = Quaternion.LookRotation(lookdir).eulerAngles;
+        DisplayPlane.transform.rotation = Quaternion.Euler(90, lookangles.y + 90, 90);
+
     }
 
     void FixedUpdate()
@@ -70,7 +86,7 @@ public class Enemy : MonoBehaviour
         //Debug
         Debug.DrawRay(transform.position, (difVector.normalized) * ViewDistance, Color.red);
         Debug.DrawLine(new Vector3(agent.destination.x, agent.destination.y - 10, agent.destination.z), new Vector3(agent.destination.x, agent.destination.y + 10, agent.destination.z), Color.blue);
-        
+
     }
 
     void SetRandomWander()
@@ -89,8 +105,8 @@ public class Enemy : MonoBehaviour
     {
         if (priority > this.priority)
         {
-           agent.SetDestination(postion);
-            this.priority = priority; 
+            agent.SetDestination(postion);
+            this.priority = priority;
         }
     }
 }
