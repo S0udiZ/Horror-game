@@ -10,6 +10,7 @@ public class Ball : MonoBehaviour
     public int maxStall;
     public float endY;
 	public bool DEBUG_RESET = false;
+    public float gravityFactor;
 
     Vector3 spawn;
     float minY;
@@ -33,6 +34,7 @@ public class Ball : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        rb.AddForce(Physics.gravity*gravityFactor, ForceMode.Acceleration);
         if (transform.position.y <= endY) {
 			DEBUG_RESET = true; //TODO handle ball result.
 		} else if (transform.position.y < minY) {
