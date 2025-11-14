@@ -28,7 +28,6 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float IntimidateTime;
     [Header("Animation")]
     [SerializeField] private Animator animator;
-    [SerializeField] private Animation anim;
 
     bool ChaseMode;
     NavMeshAgent agent;
@@ -100,6 +99,7 @@ public class Enemy : MonoBehaviour
             {
                 agent.speed = DefaultSpeed;
                 ChaseMode = false;
+                animator.speed = 1;
             }
 
             SetRandomWander();
@@ -149,5 +149,6 @@ public class Enemy : MonoBehaviour
         yield return new WaitForSeconds(IntimidateTime);
         agent.speed = MaxSpeed;
         animator.SetBool("Waiting", false);
+        animator.speed = MaxSpeed / DefaultSpeed;
     }
 }
