@@ -18,11 +18,12 @@ public class SoundArea : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     void OnTriggerEnter(Collider other)
     {
+        if (!other.gameObject.CompareTag("Player")) { return; }
         Enemy.SendSound(transform.position, Priority);
         Debug.Log("Send sound");
     }

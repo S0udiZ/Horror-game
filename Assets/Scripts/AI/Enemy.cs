@@ -23,9 +23,12 @@ public class Enemy : MonoBehaviour
     [SerializeField] private GameObject DisplayPlane;
 
     [Header("Chase mode")]
-    [SerializeField] private int DefaultSpeed;
-    [SerializeField] private int MaxSpeed;
+    [SerializeField] private float DefaultSpeed;
+    [SerializeField] private float MaxSpeed;
     [SerializeField] private float IntimidateTime;
+    [Header("Animation")]
+    [SerializeField] private Animator animator;
+    [SerializeField] private Animation anim;
 
     bool ChaseMode;
     NavMeshAgent agent;
@@ -88,14 +91,17 @@ public class Enemy : MonoBehaviour
         if (agent.remainingDistance <= NewLocationDistance)
         {
             priority = 0;
+
         }
 
         if (priority == 0)
         {
-            if (!ChaseMode)
+            if (ChaseMode)
             {
                 agent.speed = DefaultSpeed;
+                ChaseMode = false;
             }
+
             SetRandomWander();
         }
 
@@ -138,8 +144,10 @@ public class Enemy : MonoBehaviour
 
     IEnumerator WaitAndChase()
     {
+        animator.SetBool("Waiting", true);
         agent.speed = 0;
         yield return new WaitForSeconds(IntimidateTime);
         agent.speed = MaxSpeed;
+        animator.SetBool("Waiting", false);
     }
 }
