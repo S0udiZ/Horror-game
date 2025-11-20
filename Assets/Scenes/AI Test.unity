@@ -630,7 +630,6 @@ MonoBehaviour:
   MaxSpeed: 9
   IntimidateTime: 2
   animator: {fileID: 1835609896}
-  anim: {fileID: 0}
 --- !u!136 &250127548
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -719,7 +718,7 @@ Transform:
   m_GameObject: {fileID: 250127545}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -25.2, y: 2.39, z: 3.08}
+  m_LocalPosition: {x: -25.2, y: 1.9, z: 3.08}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
