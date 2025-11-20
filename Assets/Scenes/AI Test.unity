@@ -5375,7 +5375,6 @@ GameObject:
   - component: {fileID: 1835609891}
   - component: {fileID: 1835609895}
   - component: {fileID: 1835609894}
-  - component: {fileID: 1835609892}
   - component: {fileID: 1835609896}
   m_Layer: 2
   m_Name: Plane
@@ -5399,18 +5398,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 250127551}
   m_LocalEulerAnglesHint: {x: 90, y: 180, z: 90}
---- !u!114 &1835609892
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1835609890}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 184156f01bc48934985e6285121afbac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
 --- !u!23 &1835609894
 MeshRenderer:
   m_ObjectHideFlags: 0
