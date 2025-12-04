@@ -210,13 +210,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 709462434}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
+  m_LocalRotation: {x: 0.79252875, y: 0.18376724, z: -0.28845683, w: 0.50489646}
   m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+  m_LocalEulerAnglesHint: {x: 115, y: 40, z: 0}
 --- !u!114 &709462437
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -332,13 +332,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1878516385}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 0, y: -1.25, z: 3.8}
+  m_LocalRotation: {x: 0, y: 0.9848078, z: -0.17364816, w: 0}
+  m_LocalPosition: {x: 0, y: -0.18, z: 4.33}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: 20, y: 180, z: 0}
 --- !u!114 &1878516389
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -408,13 +408,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2104704265}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0.22495107, y: 0, z: 0, w: 0.9743701}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -26, y: 0, z: 0}
 --- !u!114 &2104704267
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -432,25 +432,27 @@ MonoBehaviour:
   board: {fileID: 7263046136595976974, guid: 3e560df72ebe3594183b0756bbf95883, type: 3}
   screen: {fileID: 848531577613272138, guid: f56b43178f58ef94480c9cc5dfe17efc, type: 3}
   useScreen: 1
-  ballVertOffset: 0.25
+  ballVertOffset: 0.3
   ballAreaSize: 0
   pegRowInitialCenter: {x: 0, y: 0}
   pegRowInitialCount: 1
-  pegRowNextOffset: {x: 0, y: -0.26}
+  pegRowNextOffset: {x: 0, y: -0.31}
   pegRowNextAdd: 1
   pegRowMaxCount: 10
   pegRowMaxAlternate: 1
-  pegRowInternalOffset: {x: 0.3, y: 0}
+  pegRowInternalOffset: {x: 0.36, y: 0}
   pegRows: 12
   boardDistance: 0.061
   boardSize: {x: 1, y: 2}
   boardCenter: {x: 0, y: -0.5}
   ballMass: 1
   ballGravityFactor: 1
-  ballEndY: -5
-  ballSize: 0.06
-  pegSize: 0.02
+  ballSize: 0.08
+  pegSize: 0.038
   pegLengthMargin: 0.015
+  endLength: 0
+  DEBUG_DESTROY: 0
+  DEBUG_CREATE: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
