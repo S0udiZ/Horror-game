@@ -431,7 +431,9 @@ MonoBehaviour:
   peg: {fileID: 2542937284333236406, guid: 08faba7f41bceb04092e11b73041a093, type: 3}
   board: {fileID: 7263046136595976974, guid: 3e560df72ebe3594183b0756bbf95883, type: 3}
   screen: {fileID: 848531577613272138, guid: f56b43178f58ef94480c9cc5dfe17efc, type: 3}
+  wall: {fileID: 7263046136595976974, guid: 1c274bcbaade69646a76225bdbd6e6fa, type: 3}
   useScreen: 1
+  useWalls: 1
   ballVertOffset: 0.3
   ballAreaSize: 0
   pegRowInitialCenter: {x: 0, y: 0}
@@ -442,15 +444,20 @@ MonoBehaviour:
   pegRowMaxAlternate: 1
   pegRowInternalOffset: {x: 0.36, y: 0}
   pegRows: 12
-  boardDistance: 0.061
-  boardSize: {x: 1, y: 2}
-  boardCenter: {x: 0, y: -0.5}
+  boardDistance: 0.12
+  boardMarginUp: 0.12
+  boardMarginDown: 0.12
+  wallMargin: 0.2
   ballMass: 1
   ballGravityFactor: 1
   ballSize: 0.08
   pegSize: 0.038
-  pegLengthMargin: 0.015
-  endLength: 0
+  extraDepthMargin: 0.001
+  endLength: 0.08
+  seed: 1
+  maxPegRotate: 6
+  maxPegDisplaceX: 0.015
+  maxPegDisplaceY: 0.015
   DEBUG_DESTROY: 0
   DEBUG_CREATE: 0
 --- !u!1660057539 &9223372036854775807
