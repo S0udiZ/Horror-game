@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8856472404252409019}
   - component: {fileID: 2837826924388100466}
   m_Layer: 0
-  m_Name: Plinko Board
+  m_Name: Plinko Wall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
