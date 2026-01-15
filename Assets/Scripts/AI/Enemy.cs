@@ -21,6 +21,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] private Transform[] WanderLocations;
     [Header("Extra")]
     [SerializeField] private GameObject DisplayPlane;
+    [SerializeField] private UnityEngine.Object DefaultScene;
 
     [Header("Chase mode")]
     [SerializeField] private float DefaultSpeed;
@@ -138,7 +139,7 @@ public class Enemy : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             print("Loading new scene");
-            SceneManager.LoadScene("AI Test");
+            SceneManager.LoadScene(DefaultScene.name);
         }
     }
 
